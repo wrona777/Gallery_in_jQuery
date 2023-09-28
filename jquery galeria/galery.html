@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galery</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+</head>
+<style>
+.Galeria {
+    display: flex;
+    gap: 10px;
+    margin: 10px;
+}
+
+.zdj {
+    flex: 0 0 33.333%;
+    cursor: pointer;
+}
+
+.zdj img {
+    max-width: 50%;
+    height: auto;
+}
+
+.okno {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.big {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.okno img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 50px;
+    color: red;
+    cursor: pointer;
+}
+
+.right, .left {
+    position: absolute;
+    top: 50%;
+    font-size: 100px;
+    color: red;
+    cursor: pointer;
+    transform: translateY(-50%);
+}
+
+.left {
+    left: 10px;
+}
+
+.right {
+    right: 10px;
+}
+
+</style>
+
+<script>
+$(function () {
+    const $zdj = $('.zdj');
+    const $okno = $('.okno');
+    const $big = $('.big');
+    const $bigzdj = $okno.find('img');
+    const $close = $('.close');
+    const $left = $('.left');
+    const $right = $('.right');
+
+    let Index = 0;
+
+    $zdj.click(function () {
+        Index = $zdj.index(this);
+        pokaz(Index);
+        $okno.fadeIn();
+    });
+
+    $close.click(function () {
+        zamknijokno();
+    });
+
+    $left.click(function () {
+        Index = (Index - 1 + $zdj.length) % $zdj.length;
+        pokaz(Index);
+    });
+
+    $right.click(function () {
+        Index = (Index + 1) % $zdj.length;
+        pokaz(Index);
+    });
+
+    function pokaz(index) {
+        const $aktualne = $zdj.eq(index);
+        const $aktualnezdj = $aktualne.find('img');
+        const src = $aktualnezdj.attr('src');
+        $bigzdj.attr('src', src);
+    }
+
+    function zamknijokno() {
+        $okno.fadeOut();
+    }
+
+     $(document).keyup(function (e) {
+        if (e.key === "Escape") {
+            zamknijokno();
+        }
+     });
+
+});
+
+</script>
+<body>
+
+    <div class="Galeria">
+        <div class="zdj">
+            <img src="zalno.jpg" alt="1">
+        </div>
+        <div class="zdj">
+            <img src="trener.jpg" alt="2">
+        </div>
+        <div class="zdj">
+            <img src="frank.png" alt="3">
+        </div>
+    </div>
+
+    <div class="okno">
+        <span class="close">&times;</span>
+        <div class="big">
+            <img src="" alt="duze">
+            <div class="left">&lt;</div>
+            <div class="right">&gt;</div>
+        </div>
+    </div>
+
+</body>
+</html>
